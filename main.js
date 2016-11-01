@@ -7,7 +7,10 @@ $(document).ready(() => {
       renderJSON(newFile);
   });
 
+
   function renderJSON(file) {
+
+    $('.render').empty();
 
     // generate a new FileReader object
     var reader = new FileReader();
@@ -19,20 +22,20 @@ $(document).ready(() => {
       reader.readAsText(file);
     }
 
-
     reader.onload = function(event) {
 
       const loadedJSON = event.target.result;
 
       let convertedJSON = JSON.parse(loadedJSON);
 
-      jsonToHtml(convertedJSON);
+      return jsonToHtml(convertedJSON);
 
     };
 
   }
 
   function jsonToHtml(input) {
+
     if (typeof input.content === 'string') {
 
       $('.render').append(`<${input.tag}>${input.content}</$input.tag}`);
