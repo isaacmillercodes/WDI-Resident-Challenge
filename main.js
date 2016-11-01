@@ -36,63 +36,65 @@ $(document).ready(() => {
 
   }
 
-  function convertJSON(obj) {
-
-    if (typeof obj.content === 'string') {
-
-      $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
-    } else if (Array.isArray(obj.content)) {
-
-      obj.content.map(subObj => {
-
-        if (typeof subObj.content === 'string') {
-
-          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
-
-        } else {
-          // $('.render').append(`<${subObj.tag}>`);
-          // convertJSON(subObj.content);
-        }
-
-      });
-
-    } else {
-
-      obj.map(subObj => {
-
-        if (typeof subObj.content === 'string') {
-
-          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
-
-        } else {
-
-          $('.render').append(`<${subObj.tag}>`);
-          convertJSON(subObj.content);
-        }
-
-      });
 
 
+  // function convertJSON(obj) {
+  //
+  //   if (typeof obj.content === 'string') {
+  //
+  //     $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
+  //
+  //   } else if (Array.isArray(obj.content)) {
+  //
+  //     obj.content.map(subObj => {
+  //
+  //       if (typeof subObj.content === 'string') {
+  //
+  //         $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
+  //
+  //       } else {
+  //
+  //         convertJSON(subObj.content);
+  //       }
+  //
+  //     });
+  //
+  //   } else {
+  //
+  //     obj.map(subObj => {
+  //
+  //       if (typeof subObj.content === 'string') {
+  //
+  //         $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
+  //
+  //       } else {
+  //
+  //         $('.render').append(`<${subObj.tag}>`);
+  //         convertJSON(subObj.content);
+  //       }
+  //
+  //     });
+  //
+  //   }
+  //
+  //
+  // }
 
 
-    }
-
-
-  }
 
   // function convertJSON(input) {
   //
   //   if (typeof input.content === 'string') {
   //
-  //     $('.render').append(`<${input.tag}>${input.content}</$input.tag}`);
+  //     $('.render').append(`<${input.tag}>${input.content}</${input.tag}`);
   //
   //   } else {
   //     if (input instanceof Object) {
   //
-  //       for (var index in input) {
+  //       for (var key in input) {
   //
-  //         if (input.hasOwnProperty(index)) {
-  //           convertJSON(input[index]);
+  //         if (input.hasOwnProperty(key)) {
+  //           convertJSON(input[key]);
   //         }
   //       }
   //     } else {
@@ -110,5 +112,20 @@ $(document).ready(() => {
   } else {
     alert('The File APIs are not fully supported in this browser.');
   }
+
+  //helper functions
+
+  // function checkIfString(object) {
+  //
+  //   if (typeof object.content === 'string') {
+  //
+  //     return $('.render').append(`<${object.tag}>${object.content}</${object.tag}>`);
+  //
+  //   } else {
+  //
+  //     return convertJSON(object.content);
+  //   }
+  //
+  // }
 
 });
