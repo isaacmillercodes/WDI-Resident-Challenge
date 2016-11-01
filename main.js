@@ -1,10 +1,4 @@
 $(document).ready(() => {
-  // Check for the various File API support.
-  if (window.File && window.FileReader && window.FileList) {
-
-  } else {
-    alert('The File APIs are not fully supported in this browser.');
-  }
 
   // handle input changes
   $("#fileInput").change(function() {
@@ -38,22 +32,35 @@ $(document).ready(() => {
 
   }
 
-  function jsonToHtml(json) {
-    $(json).each(function(index, element) {
-      console.log(element.tag, 'tag!');
-      console.log(element.content);
+  function jsonToHtml(input) {
+    if (typeof input.content === 'string') {
 
-      jsonToHtml(element.content);
+      $('.render').append(`<${input.tag}>${input.content}</$input.tag}`);
 
-      // if (typeof element.content === Object) {
-      //   console.log('got inside conditional');
-      //   console.log(element.content, 'content!');
-      //   jsonToHtml(element.content);
-      //   // jsonToHtml(element.content);
-      //
-      // }
-    });
+    } else {
+      if (input instanceof Object) {
 
+        for (var index in input) {
+
+          if (input.hasOwnProperty(index)) {
+            jsonToHtml(input[index]);
+          }
+
+        }
+      } else {
+
+        $('.render').append(`<${input}>`);
+
+      }
+    }
+
+  }
+
+  // Check for the various File API support.
+  if (window.File && window.FileReader && window.FileList) {
+
+  } else {
+    alert('The File APIs are not fully supported in this browser.');
   }
 
 });
