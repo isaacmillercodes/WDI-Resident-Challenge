@@ -35,10 +35,18 @@ $(document).ready(() => {
   }
 
   function convertJSON(obj) {
-    obj.map(subObj => {
-      console.log(subObj);
-      convertJSON(obj);
-    });
+
+    if (typeof obj.content === 'string') {
+      $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
+    } else {
+      obj.map(subObj => {
+        $('.render').append(`<${subObj.tag}>`);
+          if (subObj.content instanceof Object) {
+            convertJSON(subObj.content);
+          }
+        $('.render').append(`</${subObj.tag}>`);
+      });
+    }
 
   }
 
