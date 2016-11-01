@@ -26,38 +26,45 @@ $(document).ready(() => {
 
       const loadedJSON = event.target.result;
 
-      let convertedJSON = JSON.parse(loadedJSON);
+      let jsonObject = JSON.parse(loadedJSON);
 
-      return jsonToHtml(convertedJSON);
+      return convertJSON(jsonObject);
 
     };
 
   }
 
-  function jsonToHtml(input) {
-
-    if (typeof input.content === 'string') {
-
-      $('.render').append(`<${input.tag}>${input.content}</$input.tag}`);
-
-    } else {
-      if (input instanceof Object) {
-
-        for (var index in input) {
-
-          if (input.hasOwnProperty(index)) {
-            jsonToHtml(input[index]);
-          }
-
-        }
-      } else {
-
-        $('.render').append(`<${input}>`);
-
-      }
-    }
+  function convertJSON(obj) {
+    obj.map(subObj => {
+      console.log(subObj);
+      convertJSON(obj);
+    });
 
   }
+
+  // function convertJSON(input) {
+  //
+  //   if (typeof input.content === 'string') {
+  //
+  //     $('.render').append(`<${input.tag}>${input.content}</$input.tag}`);
+  //
+  //   } else {
+  //     if (input instanceof Object) {
+  //
+  //       for (var index in input) {
+  //
+  //         if (input.hasOwnProperty(index)) {
+  //           jsonToHtml(input[index]);
+  //         }
+  //       }
+  //     } else {
+  //
+  //       $('.render').append(`<${input}>`);
+  //
+  //     }
+  //   }
+  //
+  // }
 
   // Check for the various File API support.
   if (window.File && window.FileReader && window.FileList) {
