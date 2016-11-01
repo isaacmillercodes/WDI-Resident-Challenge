@@ -26,6 +26,8 @@ $(document).ready(() => {
 
       const loadedJSON = event.target.result;
 
+      // console.log(loadedJSON);
+
       let jsonObject = JSON.parse(loadedJSON);
 
       return convertJSON(jsonObject);
@@ -37,16 +39,44 @@ $(document).ready(() => {
   function convertJSON(obj) {
 
     if (typeof obj.content === 'string') {
+
       $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
-    } else {
-      obj.map(subObj => {
-        $('.render').append(`<${subObj.tag}>`);
-          if (subObj.content instanceof Object) {
-            convertJSON(subObj.content);
-          }
-        $('.render').append(`</${subObj.tag}>`);
+    } else if (Array.isArray(obj.content)) {
+
+      obj.content.map(subObj => {
+
+        if (typeof subObj.content === 'string') {
+
+          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
+
+        } else {
+          // $('.render').append(`<${subObj.tag}>`);
+          // convertJSON(subObj.content);
+        }
+
       });
+
+    } else {
+
+      obj.map(subObj => {
+
+        if (typeof subObj.content === 'string') {
+
+          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
+
+        } else {
+
+          $('.render').append(`<${subObj.tag}>`);
+          convertJSON(subObj.content);
+        }
+
+      });
+
+
+
+
     }
+
 
   }
 
@@ -62,7 +92,7 @@ $(document).ready(() => {
   //       for (var index in input) {
   //
   //         if (input.hasOwnProperty(index)) {
-  //           jsonToHtml(input[index]);
+  //           convertJSON(input[index]);
   //         }
   //       }
   //     } else {
