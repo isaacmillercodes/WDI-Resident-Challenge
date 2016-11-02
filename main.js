@@ -1,24 +1,30 @@
 $(document).ready(() => {
 
+  // Check for the various File API support.
+  if (!window.File || !window.FileReader || !window.FileList) {
+    alert('The File APIs are not fully supported in this browser.');
+  }
+
   // handle input changes
   $("#fileInput").change(function() {
-      const newFile = this.files[0];
+    const newFile = this.files[0];
 
-      renderJSON(newFile);
+    readJSON(newFile);
   });
 
+  //helper functions
 
-  function renderJSON(file) {
+  //this function reads the file, parses the JSON as an object, and calls the recursive function
+
+  function readJSON(file) {
 
     $('.render').empty();
 
-    // generate a new FileReader object
     var reader = new FileReader();
 
     if (file.type !== 'application/json') {
       alert('Please input a valid JSON file.');
     } else {
-      //fires onload function below once the file is read
       reader.readAsText(file);
     }
 
@@ -26,17 +32,17 @@ $(document).ready(() => {
 
       const loadedJSON = event.target.result;
 
-      // console.log(loadedJSON);
-
       let jsonObject = JSON.parse(loadedJSON);
 
-      return convertJSON(jsonObject);
+      return renderJSON(jsonObject);
 
     };
 
   }
 
-  function convertJSON(input) {
+  //this function recursively parses the object and renders elements on the page
+
+  function renderJSON(input) {
 
     if (typeof input.content === 'string') {
 
@@ -48,9 +54,10 @@ $(document).ready(() => {
         for (var key in input) {
 
           if (input.hasOwnProperty(key)) {
-            convertJSON(input[key]);
+            renderJSON(input[key]);
           }
         }
+
       } else {
 
         $('.render').append(`<${input}>`);
@@ -58,13 +65,6 @@ $(document).ready(() => {
       }
     }
 
-  }
-
-  // Check for the various File API support.
-  if (window.File && window.FileReader && window.FileList) {
-
-  } else {
-    alert('The File APIs are not fully supported in this browser.');
   }
 
 });
