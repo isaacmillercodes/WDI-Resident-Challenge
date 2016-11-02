@@ -36,7 +36,45 @@ $(document).ready(() => {
 
   }
 
+  function convertJSON(obj) {
+    if (typeof obj.content === 'string') {
 
+      $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
+
+    } else {
+
+      obj.map(subObj => {
+      // console.log(subObj);
+        if (typeof subObj.content === 'string') {
+
+          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
+
+        } else if (Array.isArray(subObj.content)) {
+
+          subObj.content.map(arrayObj => {
+            if (typeof arrayObj.content === 'string') {
+              $('.render').append(`<${subObj.tag}><${arrayObj.tag}>${arrayObj.content}</${arrayObj.tag}></${subObj.tag}>`);
+            } else {
+              convertJSON(arrayObj.content);
+            }
+
+          });
+
+        } else if (subObj.content instanceof Object) {
+
+          if (typeof subObj.content.content === 'string') {
+            $('.render').append(`<${subObj.tag}><${subObj.content.tag}>${subObj.content.content}</${subObj.content.tag}></${subObj.tag}>`);
+          } else {
+            convertJSON(subObj.content);
+          }
+
+
+        } else {
+          convertJSON(subObj);
+        }
+      });
+    }
+  }
 
   // function convertJSON(obj) {
   //
@@ -81,7 +119,7 @@ $(document).ready(() => {
   // }
 
 
-
+  //
   // function convertJSON(input) {
   //
   //   if (typeof input.content === 'string') {
@@ -112,20 +150,5 @@ $(document).ready(() => {
   } else {
     alert('The File APIs are not fully supported in this browser.');
   }
-
-  //helper functions
-
-  // function checkIfString(object) {
-  //
-  //   if (typeof object.content === 'string') {
-  //
-  //     return $('.render').append(`<${object.tag}>${object.content}</${object.tag}>`);
-  //
-  //   } else {
-  //
-  //     return convertJSON(object.content);
-  //   }
-  //
-  // }
 
 });
