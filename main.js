@@ -36,113 +36,29 @@ $(document).ready(() => {
 
   }
 
-  function convertJSON(obj) {
-    if (typeof obj.content === 'string') {
+  function convertJSON(input) {
 
-      $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
+    if (typeof input.content === 'string') {
+
+      $('.render').append(`<${input.tag}>${input.content}</${input.tag}`);
 
     } else {
+      if (input instanceof Object) {
 
-      obj.map(subObj => {
-      // console.log(subObj);
-        if (typeof subObj.content === 'string') {
+        for (var key in input) {
 
-          $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
-
-        } else if (Array.isArray(subObj.content)) {
-
-          subObj.content.map(arrayObj => {
-            if (typeof arrayObj.content === 'string') {
-              $('.render').append(`<${subObj.tag}><${arrayObj.tag}>${arrayObj.content}</${arrayObj.tag}></${subObj.tag}>`);
-            } else {
-              convertJSON(arrayObj.content);
-            }
-
-          });
-
-        } else if (subObj.content instanceof Object) {
-
-          if (typeof subObj.content.content === 'string') {
-            $('.render').append(`<${subObj.tag}><${subObj.content.tag}>${subObj.content.content}</${subObj.content.tag}></${subObj.tag}>`);
-          } else {
-            convertJSON(subObj.content);
+          if (input.hasOwnProperty(key)) {
+            convertJSON(input[key]);
           }
-
-
-        } else {
-          convertJSON(subObj);
         }
-      });
+      } else {
+
+        $('.render').append(`<${input}>`);
+
+      }
     }
+
   }
-
-  // function convertJSON(obj) {
-  //
-  //   if (typeof obj.content === 'string') {
-  //
-  //     $('.render').append(`<${obj.tag}>${obj.content}</${obj.tag}>`);
-  //
-  //   } else if (Array.isArray(obj.content)) {
-  //
-  //     obj.content.map(subObj => {
-  //
-  //       if (typeof subObj.content === 'string') {
-  //
-  //         $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
-  //
-  //       } else {
-  //
-  //         convertJSON(subObj.content);
-  //       }
-  //
-  //     });
-  //
-  //   } else {
-  //
-  //     obj.map(subObj => {
-  //
-  //       if (typeof subObj.content === 'string') {
-  //
-  //         $('.render').append(`<${subObj.tag}>${subObj.content}</${subObj.tag}>`);
-  //
-  //       } else {
-  //
-  //         $('.render').append(`<${subObj.tag}>`);
-  //         convertJSON(subObj.content);
-  //       }
-  //
-  //     });
-  //
-  //   }
-  //
-  //
-  // }
-
-
-  //
-  // function convertJSON(input) {
-  //
-  //   if (typeof input.content === 'string') {
-  //
-  //     $('.render').append(`<${input.tag}>${input.content}</${input.tag}`);
-  //
-  //   } else {
-  //     if (input instanceof Object) {
-  //
-  //       for (var key in input) {
-  //
-  //         if (input.hasOwnProperty(key)) {
-  //           convertJSON(input[key]);
-  //         }
-  //       }
-  //     } else {
-  //
-  //       $('.render').append(`<${input}>`);
-  //
-  //     }
-  //   }
-  //
-  // }
 
   // Check for the various File API support.
   if (window.File && window.FileReader && window.FileList) {
